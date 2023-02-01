@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import db.DB;
 import db.DbExceptions;
@@ -80,6 +83,65 @@ public class SellerDaoJDBC implements SellerDao{
 	public List<Seller> findAll(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public List<Seller> findByDepartment(Integer id){
+		
+		List<Seller> sellers = new ArrayList<>();
+		
+		PreparedStatement statement = null;
+		ResultSet result = null;
+		
+		try {
+			statement = this.connection.prepareStatement(
+					"SELECT seller.* , department.Name AS DepName " 
+					+"FROM seller INNER JOIN department "
+					+ "ON seller.DepartmentId = department.Id "
+					+ "WHERE DepartmentId = ? "
+					+ "ORDER BY Name"
+
+			);
+			
+			statement.setInt(1, id);
+			result = statement.executeQuery();
+			
+			while(result.next()) {
+				
+				//mapeando o departamento
+				Department department = mapDepartment(result);
+				Seller seller = instanceSeller(result, department);
+				
+				sellers.add(seller);
+				
+			}
+			return sellers;
+		}
+		catch(SQLException e) {
+			throw new DbExceptions(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(statement);
+			DB.closeResultSet(result);
+		}
+	}
+	
+	
+	
+	
+	
+	private Department mapDepartment(ResultSet result) throws SQLException {
+		
+		//mapear os departamentos para não salvar vários iguais
+		Map<Integer, Department> map = new HashMap<>();
+		
+		Department department = map.get(result.getInt("DepartmentId")); //pegando o Id
+		
+		if (department == null) {
+			department = instanceDepartment(result); //se o departamento não existir, instancia um
+			map.put(result.getInt("DepartmentId"), department); //coloca o departamento na instância
+		}
+		return department;
 	}
 
 	private Department instanceDepartment(ResultSet result) throws SQLException {
