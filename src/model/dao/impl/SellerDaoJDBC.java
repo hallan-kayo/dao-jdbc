@@ -14,6 +14,7 @@ import model.entities.Seller;
 
 public class SellerDaoJDBC implements SellerDao{
 	
+	//a classe depende da conexão com o banco de dados
 	private Connection connection;
 	
 	public SellerDaoJDBC(Connection connection) {
@@ -56,19 +57,11 @@ public class SellerDaoJDBC implements SellerDao{
 			statement.setInt(1, id);
 			result = statement.executeQuery();
 			
+			//verificando se há dados encontrados.
 			if(result.next()) {
 				
-				Department department = new Department();
-				department.setId(result.getInt("DepartmentId"));
-				department.setName(result.getString("depName"));
-				
-				Seller seller = new Seller();
-				seller.setId(result.getInt("Id"));
-				seller.setName(result.getString("Name"));
-				seller.setEmail(result.getString("Email"));
-				seller.setBirthdate(result.getDate("BirthDate"));
-				seller.setBaseSalary(result.getDouble("BaseSalary"));
-				seller.setDepartment(department);
+				Department department = instanceDepartment(result);
+				Seller seller = instanceSeller(result,department);
 				return seller;
 			}
 			return null;
@@ -82,10 +75,28 @@ public class SellerDaoJDBC implements SellerDao{
 		}
 	}
 
+
 	@Override
 	public List<Seller> findAll(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	private Department instanceDepartment(ResultSet result) throws SQLException {
+		Department department = new Department();
+		department.setId(result.getInt("DepartmentId"));
+		department.setName(result.getString("depName"));
+		return department;
+	}
+
+	private Seller instanceSeller(ResultSet result, Department department) throws SQLException {
+		Seller seller = new Seller();
+		seller.setId(result.getInt("Id"));
+		seller.setName(result.getString("Name"));
+		seller.setEmail(result.getString("Email"));
+		seller.setBirthdate(result.getDate("BirthDate"));
+		seller.setBaseSalary(result.getDouble("BaseSalary"));
+		seller.setDepartment(department);
+		return seller;
+	}
 }
