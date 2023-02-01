@@ -18,14 +18,21 @@ public class Main {
 //		
 //		System.out.println(seller);
 		
-		List<Seller> sellers = new ArrayList();
 		
-		sellers = sellerDao.findByDepartment(2);
+		//teste do find by department
+//		List<Seller> sellers = new ArrayList();
+//		
+//		sellers = sellerDao.findByDepartment(2);
+//		for(Seller seller : sellers) {
+//			System.out.println(seller);
+//		}
+		
+		//teste do find all
+		List<Seller> sellers = new ArrayList();	
+		sellers = sellerDao.findAll();
 		for(Seller seller : sellers) {
 			System.out.println(seller);
 		}
-			
-		
 
 	}
 
