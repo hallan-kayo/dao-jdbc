@@ -16,7 +16,6 @@ public class Main {
 		
 		//teste do find by id
 //		Seller seller = sellerDao.findById(3);
-//		
 //		System.out.println(seller);
 		
 		
@@ -36,16 +35,21 @@ public class Main {
 //		}
 		
 		//teste do insert
+//		Seller seller = new Seller();
+//		seller.setName("hallan");
+//		seller.setEmail("hallan@email.com");
+//		seller.setBirthdate(new Date());
+//		seller.setBaseSalary(6000.0);
+//		seller.setDepartment(department);
+//		
+//		sellerDao.insert(seller);
+//		System.out.println("Inserted! New Id: " + seller.getId());
 		
-		Seller seller = new Seller();
-		seller.setName("hallan");
-		seller.setEmail("hallan@email.com");
-		seller.setBirthdate(new Date());
-		seller.setBaseSalary(6000.0);
-		seller.setDepartment(department);
-		
-		sellerDao.insert(seller);
-		System.out.println("Inserted! New Id: " + seller.getId());
+		//teste update
+		Seller seller = sellerDao.findById(9);
+		seller.setName("Hallan Kayo");
+		sellerDao.update(seller);
+		System.out.println("Updated!");
 
 	}
 
