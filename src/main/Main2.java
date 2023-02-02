@@ -12,9 +12,16 @@ public class Main2 {
 		Department department = new Department();
 		DepartmentDao departmentDao = DaoFactory.createDepartmentDao();
 		
-		int id = 3;
-		department = departmentDao.findById(id);
-		System.out.println(department);
+		
+		//teste Find by Id
+//		int id = 2;
+//		department = departmentDao.findById(id);
+//		System.out.println(department);
+		
+		//teste insert
+		department.setName("Finance");
+		departmentDao.insert(department);
+		
 
 	}
 
