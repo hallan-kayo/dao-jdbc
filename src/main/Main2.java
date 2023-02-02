@@ -19,10 +19,12 @@ public class Main2 {
 //		System.out.println(department);
 		
 		//teste insert
-		department.setName("Finance");
-		departmentDao.insert(department);
+//		department.setName("Finance");
+//		departmentDao.insert(department);
 		
-
+		//teste delete by id
+		int id = 1;
+		departmentDao.deleteById(id);
 	}
 
 }
