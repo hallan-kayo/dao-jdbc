@@ -14,18 +14,21 @@ public class Main {
 		SellerDao sellerDao = DaoFactory.createSellerDao();
 		Department department = new Department(2,null);
 		
+		
 		//teste do find by id
 //		Seller seller = sellerDao.findById(3);
 //		System.out.println(seller);
 		
 		
+		
 		//teste do find by department
 //		List<Seller> sellers = new ArrayList();
-//		
 //		sellers = sellerDao.findByDepartment(2);
 //		for(Seller seller : sellers) {
 //			System.out.println(seller);
 //		}
+		
+		
 		
 		//teste do find all
 //		List<Seller> sellers = new ArrayList();	
@@ -34,6 +37,8 @@ public class Main {
 //			System.out.println(seller);
 //		}
 		
+		
+		
 		//teste do insert
 //		Seller seller = new Seller();
 //		seller.setName("hallan");
@@ -41,15 +46,22 @@ public class Main {
 //		seller.setBirthdate(new Date());
 //		seller.setBaseSalary(6000.0);
 //		seller.setDepartment(department);
-//		
 //		sellerDao.insert(seller);
 //		System.out.println("Inserted! New Id: " + seller.getId());
 		
+		
+		
 		//teste update
-		Seller seller = sellerDao.findById(9);
-		seller.setName("Hallan Kayo");
-		sellerDao.update(seller);
-		System.out.println("Updated!");
+//		Seller seller = sellerDao.findById(9);
+//		seller.setName("Hallan Kayo");
+//		sellerDao.update(seller);
+//		System.out.println("Updated!");
+		
+		
+		
+		//teste deleteById
+		int id = 9;
+		sellerDao.deleteById(id);
 
 	}
 

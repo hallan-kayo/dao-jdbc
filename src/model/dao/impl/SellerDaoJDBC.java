@@ -96,7 +96,31 @@ public class SellerDaoJDBC implements SellerDao{
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
+		
+		PreparedStatement statement = null;
+		
+		if(this.findById(id) == null) {
+			System.out.println("Id not found");
+			return;
+		}
+		
+		try {
+			statement = this.connection.prepareStatement(
+					"DELETE FROM seller "
+					+ "WHERE Id = ?"
+					);
+			
+			statement.setInt(1, id);
+			
+			statement.executeUpdate();
+			System.out.println("Deleted sucessfull! ");
+		}
+		catch(SQLException e) {
+			throw new DbExceptions(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(statement);
+		}
 		
 	}
 
@@ -139,7 +163,7 @@ public class SellerDaoJDBC implements SellerDao{
 
 	@Override
 	public List<Seller> findAll() {
-List<Seller> sellers = new ArrayList<>();
+		List<Seller> sellers = new ArrayList<>();
 		
 		PreparedStatement statement = null;
 		ResultSet result = null;
