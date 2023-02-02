@@ -60,8 +60,8 @@ public class Main {
 		
 		
 		//teste deleteById
-		int id = 9;
-		sellerDao.deleteById(id);
+//		int id = 9;
+//		sellerDao.deleteById(id);
 
 	}
 
