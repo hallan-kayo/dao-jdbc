@@ -14,17 +14,22 @@ public class Main2 {
 		
 		
 		//teste Find by Id
-//		int id = 2;
-//		department = departmentDao.findById(id);
-//		System.out.println(department);
+		int id = 3;
+		department = departmentDao.findById(id);
+		System.out.println(department);
 		
 		//teste insert
 //		department.setName("Finance");
 //		departmentDao.insert(department);
 		
 		//teste delete by id
-		int id = 1;
-		departmentDao.deleteById(id);
+//		int id = 1;
+//		departmentDao.deleteById(id);
+		
+		//teste update
+		department.setName("Technology and Softwares");
+		
+		departmentDao.update(department);
 	}
 
 }
