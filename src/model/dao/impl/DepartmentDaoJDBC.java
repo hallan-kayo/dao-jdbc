@@ -10,8 +10,11 @@ import java.util.List;
 
 import db.DB;
 import db.DbExceptions;
+import model.dao.DaoFactory;
 import model.dao.DepartmentDao;
+import model.dao.SellerDao;
 import model.entities.Department;
+import model.entities.Seller;
 
 public class DepartmentDaoJDBC implements DepartmentDao{
 
@@ -86,30 +89,60 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 
 	@Override
 	public void deleteById(Integer id) {
+			
+		SellerDao sellerDao = DaoFactory.createSellerDao();
 		
 		PreparedStatement statement = null;
 		
-		if(findById(id) == null) {
+		//verificando se existe um departamento o Id passado.
+		//colocar em um método separado
+		if(this.findById(id) == null) {
 			System.out.println("Id not found.");
 			return;
 		}
 		
-		try {
-			statement = this.connection.prepareStatement(
-					"DELETE FROM department "
-					+ "WHERE department.Id = ?"
-					);
+		//fazendo varredura nos vendedores, verificando se há vendedores vinculados a este departamento
+		List<Seller> linkedSellersToDepartment = sellerDao.findByDepartment(id);
+		
+		//se não houver vínculos, apaga o departamento
+		if(linkedSellersToDepartment.isEmpty()) {
+			try {
+				this.connection.setAutoCommit(false);
+				statement = this.connection.prepareStatement(
+						"DELETE FROM department "
+						+ "WHERE department.Id = ?"
+						);
+				
+				statement.setInt(1, id);
+				statement.executeUpdate();
+				this.connection.commit();
+				System.out.println("Deleted Sucessfull.");
+			}
+			catch(SQLException e) {
+				try {
+					this.connection.rollback();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				throw new DbExceptions(e.getMessage());
+			}
+			finally {
+				DB.closeStatement(statement);
+			}
+			return;
+		}
+		
+		//se houver vínculos 
+		for(Seller seller : linkedSellersToDepartment) {
+			Department department = this.findById(id);
+			department.setId(8);
+			seller.setDepartment(department);
+			sellerDao.update(seller);
+		}
+		this.deleteById(id);
+		
+		
 			
-			statement.setInt(1, id);
-			statement.executeUpdate();
-			System.out.println("Deleted Sucessfull.");
-		}
-		catch(SQLException e) {
-			throw new DbExceptions(e.getMessage());
-		}
-		finally {
-			DB.closeStatement(statement);
-		}
 		
 	}
 

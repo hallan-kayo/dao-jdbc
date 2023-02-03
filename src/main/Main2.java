@@ -25,20 +25,21 @@ public class Main2 {
 //		department.setName("Finance");
 //		departmentDao.insert(department);
 		
-		//teste delete by id
-//		int id = 1;
-//		departmentDao.deleteById(id);
+//		teste delete by id
+		int id = 1;
+		departmentDao.deleteById(id);
 		
 		//teste update
 //		department.setName("Technology and Softwares");
 //		departmentDao.update(department);
 		
 		//teste find All
-		List<Department> departments = new ArrayList<>();
-		departments = departmentDao.findAll();
-		for( Department dep : departments) {
-			System.out.println(dep);
-		}
+//		List<Department> departments = new ArrayList<>();
+//		departments = departmentDao.findAll();
+//		for( Department dep : departments) {
+//			System.out.println(dep);
+//		}
+		
 	}
 
 }
