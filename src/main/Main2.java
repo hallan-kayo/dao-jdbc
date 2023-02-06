@@ -1,8 +1,5 @@
 package main;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import model.dao.DaoFactory;
 import model.dao.DepartmentDao;
 import model.entities.Department;
@@ -22,11 +19,11 @@ public class Main2 {
 //		System.out.println(department);
 		
 		//teste insert
-//		department.setName("Finance");
-//		departmentDao.insert(department);
+		department.setName("Computer");
+		departmentDao.insert(department);
 		
 //		teste delete by id
-		int id = 1;
+		int id = 4;
 		departmentDao.deleteById(id);
 		
 		//teste update
@@ -39,6 +36,10 @@ public class Main2 {
 //		for( Department dep : departments) {
 //			System.out.println(dep);
 //		}
+		
+		//teste findByName
+		department = departmentDao.findByName("UnknowDepartment");
+		System.out.println(department);
 		
 	}
 

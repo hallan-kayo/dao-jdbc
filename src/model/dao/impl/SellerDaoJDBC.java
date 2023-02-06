@@ -20,6 +20,8 @@ public class SellerDaoJDBC implements SellerDao{
 	
 	//a classe depende da conexão com o banco de dados
 	private Connection connection;
+	private PreparedStatement statement = null;
+	private ResultSet result = null;
 	
 	public SellerDaoJDBC(Connection connection) {
 		this.connection = connection;
@@ -27,8 +29,6 @@ public class SellerDaoJDBC implements SellerDao{
 
 	@Override
 	public void insert(Seller seller) {
-		
-		PreparedStatement statement = null;
 		
 		try {
 			statement = this.connection.prepareStatement(
@@ -67,8 +67,6 @@ public class SellerDaoJDBC implements SellerDao{
 	@Override
 	public void update(Seller seller) {
 		
-		PreparedStatement statement = null;
-		
 		try {
 			statement = this.connection.prepareStatement(
 					"UPDATE seller "
@@ -97,8 +95,6 @@ public class SellerDaoJDBC implements SellerDao{
 	@Override
 	public void deleteById(Integer id) {
 		
-		PreparedStatement statement = null;
-		
 		if(this.findById(id) == null) {
 			System.out.println("Id not found");
 			return;
@@ -126,9 +122,6 @@ public class SellerDaoJDBC implements SellerDao{
 
 	@Override
 	public Seller findById(Integer id) {
-		
-		PreparedStatement statement = null;
-		ResultSet result = null;
 		
 		try {
 			statement = this.connection.prepareStatement(
@@ -164,9 +157,6 @@ public class SellerDaoJDBC implements SellerDao{
 	@Override
 	public List<Seller> findAll() {
 		List<Seller> sellers = new ArrayList<>();
-		
-		PreparedStatement statement = null;
-		ResultSet result = null;
 		
 		try {
 			statement = this.connection.prepareStatement(
@@ -204,10 +194,6 @@ public class SellerDaoJDBC implements SellerDao{
 	public List<Seller> findByDepartment(Integer id){
 		
 		List<Seller> sellers = new ArrayList<>();
-		
-		PreparedStatement statement = null;
-		ResultSet result = null;
-		
 		try {
 			statement = this.connection.prepareStatement(
 					"SELECT seller.* , department.Name AS DepName " 

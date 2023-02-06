@@ -19,6 +19,9 @@ import model.entities.Seller;
 public class DepartmentDaoJDBC implements DepartmentDao{
 
 	private Connection connection;
+	private PreparedStatement statement = null;
+	private ResultSet result = null;
+	
 
 	public DepartmentDaoJDBC(Connection connection) {
 		this.connection = connection;
@@ -26,9 +29,6 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 
 	@Override
 	public void insert(Department department) {
-		
-		PreparedStatement statement = null;
-		ResultSet result = null;
 		
 		try {
 			
@@ -65,8 +65,6 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 	@Override
 	public void update(Department department) {
 		
-		PreparedStatement statement = null;
-		
 		try {
 			
 			statement = this.connection.prepareStatement(
@@ -91,8 +89,6 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 	public void deleteById(Integer id) {
 			
 		SellerDao sellerDao = DaoFactory.createSellerDao();
-		
-		PreparedStatement statement = null;
 		
 		//verificando se existe um departamento o Id passado.
 		//colocar em um método separado
@@ -135,7 +131,7 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 		//se houver vínculos 
 		for(Seller seller : linkedSellersToDepartment) {
 			Department department = this.findById(id);
-			department.setId(8);
+			department.setId(this.findByName("UnknowDepartment").getId());
 			seller.setDepartment(department);
 			sellerDao.update(seller);
 		}
@@ -148,9 +144,6 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 
 	@Override
 	public Department findById(Integer id) {
-		
-		PreparedStatement statement = null;
-		ResultSet result = null;
 		
 		try {
 			statement = this.connection.prepareStatement(
@@ -173,13 +166,35 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 		}
 	}
 
+	public Department findByName(String name) {
+		
+		try {
+			statement = this.connection.prepareStatement(
+					"SELECT department.Id,department.Name FROM department WHERE department.Name = ?"
+					);
+			statement.setString(1, name);
+			result = statement.executeQuery();
+			
+			if(result.next()) {
+				Department department = instanceDepartment(result);
+				return department;
+				
+			}
+			return null;
+		}catch(SQLException e) {
+			throw new DbExceptions(e.getMessage());
+		}
+		finally {
+			DB.closeResultSet(result);
+			DB.closeStatement(statement);
+		}
+		
+	}
+	
 	@Override
 	public List<Department> findAll() {
 		
 		List<Department> departments = new ArrayList<>();
-		
-		PreparedStatement statement = null;
-		ResultSet result = null;
 		
 		try {
 			
